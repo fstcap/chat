@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Register{% endblock %}
+{% block title %}Login{% endblock %}
 {% block head %}
 <style>
     .bd-placeholder-img {
@@ -34,18 +34,40 @@
 
     .form-signin {
         width: 100%;
-        max-width: 420px;
+        max-width: 330px;
         padding: 15px;
         margin: auto;
     }
-
+    .form-signin .checkbox {
+        font-weight: 400;
+    }
+    .form-signin .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .form-signin .form-control:focus {
+        z-index: 2;
+    }
+    .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
 </style>
 {% endblock %}
 
 {% block body %}
-<body>
+<body class="text-center">
     {% from 'forms.html' import render_field %}
-    <form method=post class="form-signin">
+    <form class="form-signin" method="post">
         <div class='text-center mb-4'>
             <h1 class='display-4'><a href="">Chator</a></h1>
         </div>
@@ -54,15 +76,14 @@
             {{ message }}
         </div>
         {% endfor %}
-        {% for value in form %}
-            {{ render_field(value) }}
-        {% endfor %}
+        {{ render_field(form.username) }}
+        {{ render_field(form.password) }}
         <button type="button" class="btn btn-block btn-link">
-            <a href="{{ url_for('auth.login') }}">
-            已有账号去登陆
+            <a href="{{ url_for('auth.register') }}">
+            注册新用户
             </a>
         </button>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+        <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">登录</button>
     </form>
 </body>
 {% endblock %}

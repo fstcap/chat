@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Update auth{% endblock %}
+{% block head %}
+<style>
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+              font-size: 3.5rem;
+          }
+    }
+
+    .container {
+        max-width: 960px;
+    }
+
+    .lh-condensed { line-height: 1.25; }
+</style>
+<script>
+    (function () {
+       
+        window.addEventListener('load', function () {
+            function pwd_disabled(){
+                if($("#inputCheckbox").is(":checked")){
+                    $("#check-password").removeAttr("disabled")
+                    return true
+                }
+                else{
+                    $("#check-password").attr("disabled", "disabled")
+                    $("#check-password input").removeClass('is-invalid')
+                    $("#check-password input").val('')
+                    return false
+                } 
+            }
+            
+            pwd_disabled();
+            
+            $("#inputCheckbox").change(function(e){
+                pwd_disabled();
+            })
+
+            var forms = document.getElementsByClassName('needs-validation')
+
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (confirm("确认修改") == false){
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                }, false)
+            })
+        }, false)
+    }())
+</script>
+{% endblock %}
+
+{% block body %}
+{% from 'forms.html' import render_field, render_radio, render_checkbox %}
+<body class="bg-light">
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2 class="text-primary">Chator</h2>
+            <p class="font-weight-lighter font-italic">created on {{ g.user['created'] }}</p>
+            <p class="font-weight-lighter font-italic">updated on {{ g.user['updated'] }}</p>
+        </div>
+        <form method=post class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-md-4 order-md-2 mb-4">
+                    <h5 class="mb-3">修改密码</h5>
+                    <div class="mb-3">
+                        {{ render_checkbox(form.whether_password) }}
+                    </div>
+                    <fieldset id="check-password" disabled>
+                        {{ render_field(form.password, label=True) }}
+                        {{ render_field(form.confirm, label=True) }}
+                    </fieldset>
+                </div>
+
+                <div class="col-md-8 order-md-1">
+                    <h4 class="mb-3">{{ g.user['username'] }} Information</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ render_field(form.username, label=True) }}
+                        </div>
+                        <div class="col-md-6 mb-3 d-flex align-items-center">
+                            {{ render_radio(form.sex) }}
+                        </div>
+                
+                        <div class="col-md-6 mb-3">
+                            {{ render_field(form.email, label=True) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ render_field(form.birthdate, label=True) }}
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" 
+                        type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+{% endblock %}
