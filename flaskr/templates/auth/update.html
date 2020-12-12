@@ -2,21 +2,6 @@
 {% block title %}Update auth{% endblock %}
 {% block head %}
 <style>
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    @media (min-width: 768px) {
-          .bd-placeholder-img-lg {
-              font-size: 3.5rem;
-          }
-    }
-
     .container {
         max-width: 960px;
     }
@@ -62,20 +47,20 @@
 {% endblock %}
 
 {% block body %}
+{% from 'navbars.html' import navbar_fixed %}
 {% from 'forms.html' import render_field, render_radio, render_checkbox %}
 <body class="bg-light">
+    {{ navbar_fixed(current='update') }}
     <div class="container">
-        <div class="py-5 text-center">
-            <h2 class="text-primary">Chator</h2>
+        <div class="text-center">
             <p class="font-weight-lighter font-italic">created on {{ g.user['created'] }}</p>
             <p class="font-weight-lighter font-italic">updated on {{ g.user['updated'] }}</p>
-        </div>
+        </div> 
         <form method=post class="needs-validation" novalidate>
             <div class="row">
                 <div class="col-md-4 order-md-2 mb-4">
-                    <h5 class="mb-3">修改密码</h5>
                     <div class="mb-3">
-                        {{ render_checkbox(form.whether_password) }}
+                        {{ render_checkbox(form.check_password) }}
                     </div>
                     <fieldset id="check-password" disabled>
                         {{ render_field(form.password, label=True) }}
@@ -84,8 +69,11 @@
                 </div>
 
                 <div class="col-md-8 order-md-1">
-                    <h4 class="mb-3">{{ g.user['username'] }} Information</h4>
-                    
+                    {% for message in get_flashed_messages() %}
+                    <div class="alert alert-primary" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             {{ render_field(form.username, label=True) }}

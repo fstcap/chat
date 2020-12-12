@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block head %}
+<style>
+    html,
+    body {
+      overflow-x: hidden; /* Prevent scroll on narrow devices */
+    }
+
+    body {
+      padding-top: 56px;
+    }
+    .text-white-50 { color: rgba(255, 255, 255, .5); }
+    .bg-purple { background-color: #6f42c1; }
+    .lh-125 { line-height: 1.25; }
+</style>
+<script>
+    (function() {
+        window.addEventListener('load', function() {
+            var colors = [
+                '#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#5bc0de', '#7952b3']
+            var rects = $(".media rect")
+            var texts = $(".media text")
+            for(var i=0; i< rects.length; i++){
+                var index = Math.floor((Math.random()*colors.length))
+                $(rects[i]).attr('fill', colors[index])
+                $(texts[i]).attr('fill', colors[index])
+            }
+        }, false);
+    })();
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+    {% block navbar %}{% endblock %}
+    <main role="main" class="container">
+        <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+            <svg width="48px" height="48px" viewBox="0 0 16 16" class="bi bi-people-fill mr-3" 
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" 
+                    d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+            </svg>
+        </div>
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+        {% block list %}{% endblock %} 
+        </div>
+    </main>
+</body>
+{% endblock %}

@@ -1,2 +1,6 @@
 flask == 1.1.2
 WTForms == 2.3.3
+pytest == 6.1.2
+coverage == 5.3
+redis == 3.5.3
+Flask-SocketIO == 4.3.2

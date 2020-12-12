@@ -2,21 +2,6 @@
 {% block title %}Login{% endblock %}
 {% block head %}
 <style>
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-        }
-    }
-
     html,
     body {
         height: 100%;
@@ -69,7 +54,7 @@
     {% from 'forms.html' import render_field %}
     <form class="form-signin" method="post">
         <div class='text-center mb-4'>
-            <h1 class='display-4'><a href="">Chator</a></h1>
+            <h1 class='display-4'><a href="{{ url_for('room.index') }}">Chator</a></h1>
         </div>
         {% for message in get_flashed_messages() %}
         <div class="alert alert-primary" role="alert">

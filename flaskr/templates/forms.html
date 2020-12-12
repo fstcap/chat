@@ -24,12 +24,23 @@
     {{ radio.label(class="form-check-label") }}
 </div>
 {% endfor %}
+
+{% if field.errors %}
+<div class="invalid-feedback">
+    {% for error in field.errors %}
+    {{ error }}
+    {% endfor %}
+</div>
+{% endif %}
+
 {% if field.description %}
 <small class="form-text text-muted">{{ field.description }}</small>
 {% endif %}
 {% endmacro %}
 
 {% macro render_checkbox(field) %}
-{{ field(class="form-check-input", **kwargs) }}
-{{ field.label(class="form-check-label") }}
+<div class="custom-control custom-switch">
+    {{ field(class="custom-control-input", **kwargs) }}
+    {{ field.label(class="custom-control-label") }}
+</div>
 {% endmacro %}

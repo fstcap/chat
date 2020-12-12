@@ -1,0 +1,70 @@
+{% macro navbar_fixed(current=None) %}
+<style>
+    body {
+        padding-top: 4.5rem;
+    }
+</style>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand">
+        {{ g.user['username'] | trim | truncate(length=6,killwords=True) }}</a>
+    <button 
+        class="navbar-toggler" type="button" data-toggle="collapse" 
+        data-target="#navbarCollapse" aria-controls="navbarCollapse" 
+        aria-expanded="false" aria-label="Toggle navigation">
+        
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if current == 'Home' %}active{% endif %}">
+                <a class="nav-link" 
+                    href="{{ url_for('room.index') }}">
+                    Home 
+                    {% if current == 'Home' %}
+                    <span class="sr-only">(current)</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if current == 'friend' %}active{% endif %}">
+                <a class="nav-link" 
+                    href="{{ url_for('friend.index') }}">
+                    好友列表
+                    {% if current == 'friend' %}
+                    <span class="sr-only">(current)</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if current == 'application' %}active{% endif %}">
+                <a class="nav-link" 
+                    href="{{ url_for('friend.application') }}">
+                    申请列表 
+                    {% if current == 'application' %}
+                    <span class="sr-only">(current)</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if current == 'update' %}active{% endif %}">
+                <a class="nav-link" 
+                    href="{{ url_for('auth.update') }}">
+                    个人中心 
+                    {% if current == 'update' %}
+                    <span class="sr-only">(current)</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" 
+                    href="{{ url_for('auth.logout') }}">
+                    退出登录 
+                </a>
+            </li>
+        </ul>
+        <form class="form-inline mt-2 mt-md-0" method=get 
+            action="{{ url_for('friend.search') }}">
+            <input class="form-control mr-sm-2" type="text" 
+            placeholder="用户名/邮箱" name="query" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+{% endmacro %}

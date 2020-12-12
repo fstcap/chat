@@ -1,0 +1,56 @@
+{% extends 'friend/users.html' %}
+
+{% from 'navbars.html' import navbar_fixed %}
+{% block navbar %}
+{{ navbar_fixed(current='application') }}
+{% endblock %}
+
+{% block list %}
+<script>
+function del(url, applicant_id){
+    $.ajax({
+        type: 'DELETE',
+        data: {'id': applicant_id},
+        dataType: 'json',
+        url: url,
+        success : function(){
+            window.location.reload();
+        }
+    });
+}
+</script>
+
+<h6 class="border-bottom border-gray pb-2 mb-0">申请列表</h6>
+{% for application in applications %}
+<div class="media text-muted pt-3">
+    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" 
+        xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" 
+        focusable="false" role="img" aria-label="Placeholder: 32x32">
+        <title>Placeholder</title>
+        <rect width="100%" height="100%" fill="#007bff"/>
+        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+    <div class="media-body d-flex justify-content-between 
+        pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <div class="d-flex align-items-start flex-column">
+            <strong class="text-gray-dark">{{ application['username'] }}</strong>
+            <span>{{application['message'] | trim | truncate(100, True) }}</span>
+        </div>
+        
+        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary"
+                onclick="document.getElementById('agree_{{ application['applicant_id'] }}').submit();">
+                同意</button>
+            <button type="button" class="btn btn-danger"
+                onclick="del('{{ url_for('friend.application') }}', 
+                    {{ application['applicant_id'] }})">拒绝</button>
+        </div>
+
+        <form style="display:none" id="agree_{{ application['applicant_id'] }}" method=post
+            action="{{ url_for('friend.application') }}">
+            <input type="number" name="id" value={{ application['applicant_id'] }}>
+        </form>
+    </div>
+</div>
+{% endfor %}
+<small class="d-block mt-3"></small>
+{% endblock %}

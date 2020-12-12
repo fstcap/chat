@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from flask import Flask
 
 def create_app(test_config=None):
@@ -6,6 +7,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
+        PERMANENT_SESSION_LIFETIME=timedelta(days=31),
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
@@ -21,11 +23,12 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-   
-    from . import db, auth
-
+     
+    from . import db, auth, room, friend
     db.init_app(app)
-
     app.register_blueprint(auth.bp)
-    
+    app.register_blueprint(room.bp)
+    app.add_url_rule('/', endpoint='index')
+    app.register_blueprint(friend.bp)
+   
     return app

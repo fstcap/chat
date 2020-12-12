@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='room.css') }}">
+<script type="text/javascript" charset="utf-8">
+    (function () {
+
+        window.addEventListener('load', function () {
+            
+            var socket = io("127.0.0.1:9999", {'pingInterval': 300000, 'pingTimeout': 600000});
+            socket.on('connect', function() {
+                console.log('连接上了');
+            });
+            socket.on('disconnect', function() {
+                console.log('断开了·');
+            });
+
+            socket.on('message', function(message, ack){
+                console.log(message);
+                ack(0)
+            });
+
+            $('button').click(function(){
+                console.log('发送时间触发');
+                socket.emit('message', '客户端按钮发送的消息', function(data){
+                    console.log("发送成功", data)
+                });
+            });
+
+        // end window load
+        }, false)
+    // end (function(){}())
+    }())
+    
+</script>
+{% endblock %}
+
+{% block body %}
+{% from 'navbars.html' import navbar_fixed %}
+<body class="bg-light">
+    {{ navbar_fixed(current='Home') }}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-4 order-md-2">
+                <div class="list-group" role="tablist">
+                    {% for user_room in user_rooms %}
+                    <a class="list-group-item d-flex list-group-item-action 
+                        justify-content-between align-items-center" 
+                        data-toggle="list" role="tab">
+                        {% for user in user_room['users'] %}
+                            {{ user['username'] if user['id'] != g.user['id'] and loop.length == 2 }}
+                        {% endfor %}
+                        <span class="badge badge-primary badge-pill">14</span>
+                    </a>
+                    {% endfor %}
+                </div> 
+            </div>
+            <div class="col-md-8 order-md-1">
+                <div class="shadow rounded mb-3 show-board"></div>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-lg">Large</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Sizing example input" 
+                        aria-describedby="inputGroup-sizing-lg">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" 
+                            id="button-addon2">发送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
