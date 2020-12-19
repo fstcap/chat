@@ -2,37 +2,6 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='room.css') }}">
-<script type="text/javascript" charset="utf-8">
-    (function () {
-
-        window.addEventListener('load', function () {
-            
-            var socket = io("127.0.0.1:9999", {'pingInterval': 300000, 'pingTimeout': 600000});
-            socket.on('connect', function() {
-                console.log('连接上了');
-            });
-            socket.on('disconnect', function() {
-                console.log('断开了·');
-            });
-
-            socket.on('message', function(message, ack){
-                console.log(message);
-                ack(0)
-            });
-
-            $('button').click(function(){
-                console.log('发送时间触发');
-                socket.emit('message', '客户端按钮发送的消息', function(data){
-                    console.log("发送成功", data)
-                });
-            });
-
-        // end window load
-        }, false)
-    // end (function(){}())
-    }())
-    
-</script>
 {% endblock %}
 
 {% block body %}

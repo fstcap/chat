@@ -1,0 +1,69 @@
+{% extends 'friend/users.html' %}
+
+{% from 'navbars.html' import navbar_fixed %}
+{% block navbar %}
+{{ navbar_fixed() }}
+{% endblock %}
+
+{% block list %}
+<h6 class="border-bottom border-gray pb-2 mb-0">搜索结果</h6>
+{% for user in users %}
+<div class="media text-muted pt-3">
+    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" 
+        xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" 
+        focusable="false" role="img" aria-label="Placeholder: 32x32">
+        <title>Placeholder</title>
+        <rect width="100%" height="100%" fill="#007bff"/>
+        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+    <div class="media-body d-flex justify-content-between 
+        pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <div class="d-flex align-items-start flex-column">
+            <strong class="text-gray-dark">{{ user['username'] }}</strong>
+            <span class="d-block">{{ user['sex'] }}</span>
+        </div>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary" data-toggle="modal" 
+                data-target="#sendMSGModal" data-whatever="{{ user['id'] }}">
+                申请好友</button>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<small class="d-block mt-3"></small>
+
+<div class="modal fade" id="sendMSGModal" tabindex="-1" role="dialog" 
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">申请消息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="send" method=post action="{{ url_for('friend.search_applicate') }}">
+                    <input type="number" id="user_id" name="id" style="display:none">
+                    <div class="form-group">
+                        <textarea class="form-control" id="message-text" name="message"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    取消</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="document.getElementById('send').submit();">发送</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#sendMSGModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var user_id = button.data('whatever') // Extract info from data-* attributes
+        var modal = $(this)
+        modal.find('.modal-body input').val(user_id)
+    })    
+</script>
+{% endblock %}

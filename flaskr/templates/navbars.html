@@ -35,9 +35,11 @@
                 </a>
             </li>
             <li class="nav-item {% if current == 'application' %}active{% endif %}">
-                <a class="nav-link" 
-                    href="{{ url_for('friend.application') }}">
-                    申请列表 
+                <a class="nav-link"
+                    onclick='deleteNotice("{{ url_for('friend.application') }}")'
+                    href="javascript:void(0)">
+                    申请列表
+                    <span id="application-num" class="badge badge-primary badge-pill">0</span>
                     {% if current == 'application' %}
                     <span class="sr-only">(current)</span>
                     {% endif %}
@@ -60,11 +62,39 @@
             </li>
         </ul>
         <form class="form-inline mt-2 mt-md-0" method=get 
-            action="{{ url_for('friend.search') }}">
+            action="{{ url_for('friend.search_applicate') }}">
             <input class="form-control mr-sm-2" type="text" 
             placeholder="用户名/邮箱" name="query" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
 </nav>
+<script>
+$.ajax({
+    url: '/notice/application',
+    dataType: 'json',
+    type: 'GET',
+    success: function(data) {
+        if (parseInt(data['notice_len']) == 0){
+            $("#application-num").addClass("d-none")
+        }
+        else{
+            $("#application-num").removeClass("d-none")
+            $("#application-num").text(data['notice_len']) 
+        }
+    }
+})
+function deleteNotice (href) {
+    $.ajax({
+        url: '/notice/application',
+        dataType: 'json',
+        type: 'DELETE',
+        success: function(){
+            window.location.href=href
+        },
+        error: function(){
+            alert('连接错误')
+        }})
+}
+</script>
 {% endmacro %}

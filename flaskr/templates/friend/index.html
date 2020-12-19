@@ -41,7 +41,8 @@ function del(url, friend_id){
         
         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
             <button type="button" class="btn btn-primary"
-                onclick="document.getElementById('post-chat_{{ friend['friend_id'] }}').submit();">聊天</button>
+                onclick="document.getElementById('post-chat_{{ friend['friend_id'] }}').submit();">
+                聊天</button>
             <button type="button" class="btn btn-danger"
                 onclick="del('{{ url_for('friend.index') }}', 
                     {{ friend['friend_id'] }})">删除</button>

@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from flask import Flask
+from flask_socketio import SocketIO
 
 def create_app(test_config=None):
     # create and configure the app
@@ -24,11 +25,15 @@ def create_app(test_config=None):
     except OSError:
         pass
      
-    from . import db, auth, room, friend
+    from . import db, auth, room, friend, notice
     db.init_app(app)
     app.register_blueprint(auth.bp)
     app.register_blueprint(room.bp)
     app.add_url_rule('/', endpoint='index')
     app.register_blueprint(friend.bp)
-   
+    app.register_blueprint(notice.bp)
+
+    from .socket_io import socketio
+    socketio.init_app(app)
+
     return app
